@@ -1,3 +1,4 @@
+#!/usr/bin/python3.6
 import sys
 import pygame
 from pygame.locals import *
@@ -8,7 +9,7 @@ pygame.init()
 W, H = 1366, 768
 
 posX, posY = W // 4, H // 2 - 140    # Player co-ordinates
-posX2, posY2 = posX, posY * 3 / 2
+posX2, posY2 = posX, posY * 3 / 2 + 105
 
 gameDisplay = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Parallel")
@@ -95,15 +96,27 @@ class PlayerDown:
         self.health = 10
         self.faceLeft = False
         self.faceRight = True
-        self.idle = [
-            pygame.image.load("sprites/player/Idle/id1-l.png").convert_alpha(),
-            pygame.image.load("sprites/player/Idle/id1-r.png").convert_alpha(),
+        #self.img1 = pygame.transform.rotate(self.img1, 180)
+        self.idle = [  
+        pygame.image.load("sprites/player/Idle/id1-l.png").convert_alpha(), pygame.image.load("sprites/player/Idle/id1-r.png").convert_alpha(),
         ]
+        self.idle = [pygame.transform.rotate(img, 180) for img in self.idle]
+        self.index = 0
 
+    def action(self, surface, velocity):
+        if self.index >= 6:
+            self.index = 0
+        if vel > 0:             # Player is moving in a positive direction
+            surface.blit(self.run_right[self.index % 7], (self.x, self.y))
+            self.x += vel
+            self.index += 1
+        if vel < 0:
+            surface.blit(self.run_left[self.index % 7], (self.x, self.y))
+            self.x += vel
+            self.index += 1
 
-# Objects
+# Player Objects
 p = PlayerUP(posX, posY, 10, 10, 0)
-
 p2 = PlayerDown(posX2, posY2, 10, 10, 0)
 
 # Game Loop
@@ -116,7 +129,7 @@ while run:
 
     keys = pygame.key.get_pressed()
 
-    # Motion Controls
+    # Motion Controls Player 1
     if keys[pygame.K_RIGHT] and p.x < W - abs(vel) - 50:
         p.faceRight, p.faceLeft = True, False
         vel = 18
@@ -131,6 +144,11 @@ while run:
         gameDisplay.blit(p.idle[0], (p.x, p.y))
     elif p.faceLeft:
         gameDisplay.blit(p.idle[1], (p.x, p.y))
+    
+
+    #Motion Conrtols Player 2
+
+    gameDisplay.blit(p2.idle[0], (p2.x, p2.y))
 
     # Jump
     if not p.isJump:
