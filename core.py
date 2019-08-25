@@ -108,10 +108,10 @@ class PlayerDown:
         self.health = 10
         self.faceLeft = True
         self.faceRight = False
-       
+
        # Load sprites for player 2
-        self.idle = [pygame.transform.rotate(img, 180) for img in idle]                 
-        self.run_right = [pygame.transform.rotate(img, 180) for img in run_left]       # Loading and tilt images by 180 degree 
+        self.idle = [pygame.transform.rotate(img, 180) for img in idle]
+        self.run_right = [pygame.transform.rotate(img, 180) for img in run_left]       # Loading and tilt images by 180 degree
         self.run_left = [pygame.transform.rotate(img, 180) for img in run_right]
         self.jump = [pygame.transform.rotate(img, 180) for img in jump]
 
@@ -128,9 +128,22 @@ class PlayerDown:
             self.x += vel
             self.index += 1
 
+# Class for incoming projectile
+class Knife:
+    def __init__(self, x, y, vel):
+        self.x = x
+        self.y = y
+        self.vel = vel              # variable speed of incomming projectile
+        self.img = pygame.image.load("./sprites/knife/knife.png").convert_alpha()
+
+    def action(self, surface):
+        surface.blit(self.img, (self.x, self.y))
+        self.x -= vel
+
 # Player Objects
 p = PlayerUP(posX, posY, 10, 10, 0)
 p2 = PlayerDown(posX2, posY2, 10, 10, 0)
+k = Knife(posX + 200, posY + 10, 5)
 
 # Game Loop
 while run:
@@ -157,7 +170,7 @@ while run:
         gameDisplay.blit(p.idle[0], (p.x, p.y))
     elif p.faceLeft:
         gameDisplay.blit(p.idle[1], (p.x, p.y))
-    
+
     #Motion Conrtols Player 2
     if keys[pygame.K_RIGHT] and p2.x < W - abs(vel) - 50:
         p2.faceRight, p2.faceLeft = False, True
@@ -174,11 +187,12 @@ while run:
     elif p2.faceLeft:
         gameDisplay.blit(p2.idle[1], (p2.x, p2.y))
 
+    k.action(gameDisplay)
     # Jump movement for both players
-    if not p.isJump:           
+    if not p.isJump:
         if keys[pygame.K_UP]:
             p.isJump = p2.isJump = True
-            
+
     else:
         if p.jumpCount >= -10:
             neg = 1
@@ -186,9 +200,9 @@ while run:
                 neg = -1
             jumpVar = (p.jumpCount ** 2) * 0.3 * neg
             p.y -= jumpVar
-            p2.y += jumpVar                # Player  2 jump 
+            p2.y += jumpVar                # Player  2 jump
             p.jumpCount -= 1
-        
+
         else:
             p.isJump = False
             p2.isJump = False
