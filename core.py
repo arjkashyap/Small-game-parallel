@@ -152,7 +152,7 @@ while run:
             run = False
     gameDisplay.blit(bgUp, [0, 0])
     gameDisplay.blit(bgDown, [0, H // 2])
-
+    k.action(gameDisplay)
     keys = pygame.key.get_pressed()
 
     # Motion Controls Player 1
@@ -186,8 +186,6 @@ while run:
         gameDisplay.blit(p2.idle[0], (p2.x, p2.y))
     elif p2.faceLeft:
         gameDisplay.blit(p2.idle[1], (p2.x, p2.y))
-
-    k.action(gameDisplay)
     # Jump movement for both players
     if not p.isJump:
         if keys[pygame.K_UP]:
@@ -207,7 +205,6 @@ while run:
             p.isJump = False
             p2.isJump = False
             p.jumpCount = 10
-
     pygame.display.update()
     clock.tick(fps)
 
