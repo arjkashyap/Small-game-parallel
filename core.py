@@ -17,6 +17,7 @@ pygame.display.set_caption("Parallel")
 # Background Images
 bgUp, bgDown = pygame.image.load('sprites/bgUp.jpg').convert(), pygame.image.load('sprites/bgDown.jpg').convert()
 bgUp, bgDown = pygame.transform.scale(bgUp, (W, H // 2)), pygame.transform.scale(bgDown, (W, H // 2))
+bg_x, bg_y = 0, 0      # co-ordinates
 
 clock = pygame.time.Clock()
 run = True
@@ -137,8 +138,16 @@ while run:
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_F4 and (key[K_LALT] or key[K_LALT])):
             run = False
-    gameDisplay.blit(bgUp, [0, 0])
-    gameDisplay.blit(bgDown, [0, H // 2])
+    # Moving background annimation
+    rel_bgX = bg_x % W
+    
+    gameDisplay.blit(bgUp, [bg_x, bg_y])
+    rel_bgX -= 1
+
+    gameDisplay.blit(bgDown, [bg_x, H // 2])
+    
+    
+
 
     keys = pygame.key.get_pressed()
 
