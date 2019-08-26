@@ -23,44 +23,44 @@ run = True
 fps = 15
 vel = 0         # inital speed of the player
 
-#Player Common sprites
+# Player Common sprites
 idle = [pygame.image.load("sprites/player/Idle/id1-r.png").convert_alpha(),
         pygame.image.load("sprites/player/Idle/id1-l.png").convert_alpha(),
-]
+        ]
 
 run_right = [
-        pygame.image.load("sprites/player/running/r0.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/r1.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/r2.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/r3.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/r4.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/r5.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/r6.png").convert_alpha(),
-    ]
+    pygame.image.load("sprites/player/running/r0.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r1.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r2.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r3.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r4.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r5.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r6.png").convert_alpha(),
+]
 
 run_left = [
-        pygame.image.load("sprites/player/running/l0.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/l1.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/l2.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/l3.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/l4.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/l5.png").convert_alpha(),
-        pygame.image.load("sprites/player/running/l6.png").convert_alpha(),
-    ]
+    pygame.image.load("sprites/player/running/l0.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l1.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l2.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l3.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l4.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l5.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l6.png").convert_alpha(),
+]
 
 jump = [
-        pygame.image.load("sprites/player/jump/jump-up-l.png").convert_alpha(),
-        pygame.image.load("sprites/player/jump/jump-fall-l.png").convert_alpha(),
-        pygame.image.load("sprites/player/jump/jump-up-r.png").convert_alpha(),
-        pygame.image.load("sprites/player/jump/jump-fall-r.png").convert_alpha(),
-    ]
+    pygame.image.load("sprites/player/jump/jump-up-l.png").convert_alpha(),
+    pygame.image.load("sprites/player/jump/jump-fall-l.png").convert_alpha(),
+    pygame.image.load("sprites/player/jump/jump-up-r.png").convert_alpha(),
+    pygame.image.load("sprites/player/jump/jump-fall-r.png").convert_alpha(),
+]
 
 
 # Class for player1
 class PlayerUP(object):
 
     def __init__(self, x, y, width, height, end):
-        self.x = x              #Position x and y
+        self.x = x  # Position x and y
         self.y = y
         self.width = width
         self.height = height
@@ -116,6 +116,7 @@ class PlayerDown:
         self.jump = [pygame.transform.rotate(img, 180) for img in jump]
 
         self.index = 0
+
     def action(self, surface, velocity):
         if self.index >= 6:
             self.index = 0
@@ -129,6 +130,8 @@ class PlayerDown:
             self.index += 1
 
 # Class for incoming projectile
+
+
 class Knife:
     def __init__(self, x, y, vel):
         self.x = x
@@ -139,6 +142,7 @@ class Knife:
     def action(self, surface):
         surface.blit(self.img, (self.x, self.y))
         self.x -= vel
+
 
 # Player Objects
 p = PlayerUP(posX, posY, 10, 10, 0)
@@ -171,7 +175,7 @@ while run:
     elif p.faceLeft:
         gameDisplay.blit(p.idle[1], (p.x, p.y))
 
-    #Motion Conrtols Player 2
+    # Motion Conrtols Player 2
     if keys[pygame.K_RIGHT] and p2.x < W - abs(vel) - 50:
         p2.faceRight, p2.faceLeft = False, True
         vel = 18
