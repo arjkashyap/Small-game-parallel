@@ -23,6 +23,9 @@ run = True
 fps = 15
 vel = 0         # inital speed of the player
 
+# background image co-ordinates
+bg_x = bg_y = 0
+
 # Player Common sprites
 idle = [pygame.image.load("sprites/player/Idle/id1-r.png").convert_alpha(),
         pygame.image.load("sprites/player/Idle/id1-l.png").convert_alpha(),
@@ -141,20 +144,26 @@ class Knife:
 
     def action(self, surface):
         surface.blit(self.img, (self.x, self.y))
-        self.x -= vel
+        self.x -= self.vel
+
 
 
 # Player Objects
 p = PlayerUP(posX, posY, 10, 10, 0)
 p2 = PlayerDown(posX2, posY2, 10, 10, 0)
-k = Knife(posX + 200, posY + 10, 5)
+k = Knife(W, posY + 10, 20)
 
 # Game Loop
 while run:
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_F4 and (key[K_LALT] or key[K_LALT])):
             run = False
-    gameDisplay.blit(bgUp, [0, 0])
+
+    # Moving Background
+    rel_x = bg_x % bgUp.get_rect().width
+    gameDisplay.blit(bgUp, [rel_x - bgUp.get_rect().width, bg_y])
+    bg_x -= 3
+
     gameDisplay.blit(bgDown, [0, H // 2])
     k.action(gameDisplay)
     keys = pygame.key.get_pressed()
@@ -209,6 +218,10 @@ while run:
             p.isJump = False
             p2.isJump = False
             p.jumpCount = 10
+
+    # Player dead scenario
+  #  if(p.x == )
+
     pygame.display.update()
     clock.tick(fps)
 
