@@ -7,7 +7,7 @@ pygame.init()
 
 # Display settings
 W, H = 1366, 768
-
+bg_speed = 5
 posX, posY = W // 4, H // 2 - 140    # Player co-ordinates
 posX2, posY2 = posX, posY * 3 / 2 + 105     # Player 2 co-ordinates
 
@@ -25,6 +25,7 @@ vel = 0         # inital speed of the player
 
 # background image co-ordinates
 bg_x = bg_y = 0
+bg_x2, bg_y2 = 0, H // 2
 
 # Player Common sprites
 idle = [pygame.image.load("sprites/player/Idle/id1-r.png").convert_alpha(),
@@ -159,14 +160,28 @@ while run:
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_F4 and (key[K_LALT] or key[K_LALT])):
             run = False
 
-    # Moving Background
+    # Moving Background for image 1
     rel_x = bg_x % bgUp.get_rect().width
     gameDisplay.blit(bgUp, [rel_x - bgUp.get_rect().width, bg_y])
-    bg_x -= 3
+    gameDisplay.blit(bgUp, [rel_x, bg_y])                       # Second Inmage
+    bg_x -= bg_speed
+    if(rel_x < bgUp.get_rect().width):
+        rel_x = 0
 
-    gameDisplay.blit(bgDown, [0, H // 2])
+    # Moving Background for image 2
+    rel_x2 = bg_x2 % bgDown.get_rect().width
+    gameDisplay.blit(bgDown, [rel_x2 - bgDown.get_rect().width, bg_y2])
+    gameDisplay.blit(bgDown, [rel_x2, bg_y2])
+    bg_x2 -= bg_speed
     k.action(gameDisplay)
     keys = pygame.key.get_pressed()
+
+    p.x -= bg_speed                         # Player x reduces with moving game cam
+    p2.x -= bg_speed
+
+    if p.x <= 0 or p2.x <= 0:
+        p.x += bg_speed
+        p2.x += bg_speed
 
     # Motion Controls Player 1
     if keys[pygame.K_RIGHT] and p.x < W - abs(vel) - 50:

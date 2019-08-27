@@ -6,4 +6,4 @@ Requirements:
 - pygame lib
 
 Run:
-Open terminal in root dir and run "python core.py"
+Open terminal in game dir and run "python core.py"
