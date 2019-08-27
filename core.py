@@ -33,23 +33,13 @@ idle = [pygame.image.load("sprites/player/Idle/id1-r.png").convert_alpha(),
         ]
 
 run_right = [
-    pygame.image.load("sprites/player/running/r0.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/r1.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/r2.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/r3.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/r4.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/r5.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/r6.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/r" + str(x) + ".png").convert_alpha()
+    for x in range(0, 7)
 ]
 
 run_left = [
-    pygame.image.load("sprites/player/running/l0.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/l1.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/l2.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/l3.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/l4.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/l5.png").convert_alpha(),
-    pygame.image.load("sprites/player/running/l6.png").convert_alpha(),
+    pygame.image.load("sprites/player/running/l" + str(x) + ".png").convert_alpha()
+    for x in range(0, 7)
 ]
 
 jump = [
@@ -163,7 +153,7 @@ while run:
     # Moving Background for image 1
     rel_x = bg_x % bgUp.get_rect().width
     gameDisplay.blit(bgUp, [rel_x - bgUp.get_rect().width, bg_y])
-    gameDisplay.blit(bgUp, [rel_x, bg_y])                       # Second Inmage
+    gameDisplay.blit(bgUp, [rel_x, bg_y])                       # Overlaps image secoundary
     bg_x -= bg_speed
     if(rel_x < bgUp.get_rect().width):
         rel_x = 0
