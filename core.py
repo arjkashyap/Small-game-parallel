@@ -151,10 +151,11 @@ def throwKnife(x, y, surface):
     print("Object thrown " + str(x) + " " + str(y))
     surface.blit(k.img, (x, y))
 
+
     # Incoming projectile logic
 kPos_x = W                              # Positions
-kPos_y = random.randrange(0, H // 2)
-k_speed = 10
+kPos_y = random.randrange(H // 4, H // 2)
+k_speed = 20
 
 
 # Player Objects
@@ -184,8 +185,11 @@ while run:
 
     # Throwing knife
     kPos_x -= k_speed
-    kPos_y = random.randrange(0, H // 2)
     throwKnife(kPos_x, kPos_y, gameDisplay)
+
+    if kPos_x <= 0:
+        kPos_x = W + 20
+        kPos_y = random.randrange(H // 4, H // 2 - 30)
 
     keys = pygame.key.get_pressed()
 
