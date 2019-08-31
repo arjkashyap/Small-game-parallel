@@ -1,10 +1,19 @@
 #!/usr/bin/python3.6
 import sys
 import pygame
+import time
 from pygame.locals import *
 import random
 
 pygame.init()
+
+pygame.font.init()
+myFont = pygame.font.SysFont('Comic Sans MS', 35)
+
+# some color variables
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
 
 # Display settings
 W, H = 1366, 768
@@ -50,8 +59,9 @@ jump = [
     pygame.image.load("sprites/player/jump/jump-fall-r.png").convert_alpha(),
 ]
 
-
 # Class for player1
+
+
 class PlayerUP(object):
 
     def __init__(self, x, y, width, height, end):
@@ -133,29 +143,52 @@ class Knife:
         self.y = y
         self.vel = vel              # variable speed of incomming projectile
         self.img = pygame.image.load("./sprites/knife/knife.png").convert_alpha()
-        self.throwKnife = [x for x in range(0, 50, 5)]      # throw knife when num is present in list
 
     # Knife motion
     def action(self, surface):
         surface.blit(self.img, (self.x, self.y))
         self.x -= self.vel
 
-    # function for throwing knife at random intervals
-  #  def incoming(self, surface):
-  #      inst_num = random.randint(0, 50)            # random number generated
-    #    print(inst_num)
-  #      if inst_num in self.throwKnife:
-
-
-def throwKnife(x, y, surface):
-    print("Object thrown " + str(x) + " " + str(y))
-    surface.blit(k.img, (x, y))
-
 
     # Incoming projectile logic
 kPos_x = W                              # Positions
 kPos_y = random.randrange(H // 4, H // 2)
 k_speed = 20
+
+
+def throwKnife(x, y, surface):
+    surface.blit(k.img, (x, y))
+
+# Detect collision between player and projectile
+
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, white)
+    return textSurface, textSurface.get_rect()
+
+
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf', 115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((W / 2), (H / 2))
+    gameDisplay.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+
+    time.sleep(2)
+
+    game_loop()
+
+
+def detectCollision(surface, px, py, kx, ky):
+    print("range is : " + str(py) + " to " + str(py + 30))
+    if kx == px:
+        print("X co-ordinates are equal.......")
+    if int(ky) in range(int(py), int(py + 400)) and int(kx) in range(int(px), int(px + 10)):
+        message_display("Game Over")
+
+    print("px: " + str(px) + " py: " + str(py))
+    print("kx: " + str(kx) + " ky: " + str(ky))
 
 
 # Player Objects
@@ -187,9 +220,12 @@ while run:
     kPos_x -= k_speed
     throwKnife(kPos_x, kPos_y, gameDisplay)
 
+    # When the knife goes out of screen, regenerate the y co-ordinates and throw again
     if kPos_x <= 0:
         kPos_x = W + 20
         kPos_y = random.randrange(H // 4, H // 2 - 30)
+
+    detectCollision(gameDisplay, p.x, p.y, kPos_x, kPos_y)
 
     keys = pygame.key.get_pressed()
 
