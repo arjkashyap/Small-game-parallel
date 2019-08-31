@@ -2,6 +2,7 @@
 import sys
 import pygame
 from pygame.locals import *
+import random
 
 pygame.init()
 
@@ -132,11 +133,28 @@ class Knife:
         self.y = y
         self.vel = vel              # variable speed of incomming projectile
         self.img = pygame.image.load("./sprites/knife/knife.png").convert_alpha()
+        self.throwKnife = [x for x in range(0, 50, 5)]      # throw knife when num is present in list
 
+    # Knife motion
     def action(self, surface):
         surface.blit(self.img, (self.x, self.y))
         self.x -= self.vel
 
+    # function for throwing knife at random intervals
+  #  def incoming(self, surface):
+  #      inst_num = random.randint(0, 50)            # random number generated
+    #    print(inst_num)
+  #      if inst_num in self.throwKnife:
+
+
+def throwKnife(x, y, surface):
+    print("Object thrown " + str(x) + " " + str(y))
+    surface.blit(k.img, (x, y))
+
+    # Incoming projectile logic
+kPos_x = W                              # Positions
+kPos_y = random.randrange(0, H // 2)
+k_speed = 10
 
 
 # Player Objects
@@ -163,7 +181,12 @@ while run:
     gameDisplay.blit(bgDown, [rel_x2 - bgDown.get_rect().width, bg_y2])
     gameDisplay.blit(bgDown, [rel_x2, bg_y2])
     bg_x2 -= bg_speed
-    k.action(gameDisplay)
+
+    # Throwing knife
+    kPos_x -= k_speed
+    kPos_y = random.randrange(0, H // 2)
+    throwKnife(kPos_x, kPos_y, gameDisplay)
+
     keys = pygame.key.get_pressed()
 
     p.x -= bg_speed                         # Player x reduces with moving game cam
