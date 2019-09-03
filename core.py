@@ -276,11 +276,11 @@ while run:
         gameDisplay.blit(p2.idle[0], (p2.x, p2.y))
     elif p2.faceLeft:
         gameDisplay.blit(p2.idle[1], (p2.x, p2.y))
-    # Jump movement for both players
+
+    # Jump mechanics for player 1
     if not p.isJump:
         if keys[pygame.K_UP]:
-            p.isJump = p2.isJump = True
-
+            p.isJump = True
     else:
         if p.jumpCount >= -10:
             neg = 1
@@ -288,14 +288,28 @@ while run:
                 neg = -1
             jumpVar = (p.jumpCount ** 2) * 0.3 * neg
             p.y -= jumpVar
-            p2.y += jumpVar                # Player  2 jump
             p.jumpCount -= 1
 
         else:
             p.isJump = False
-            p2.isJump = False
             p.jumpCount = 10
 
+    # player 2 jump mechanics
+    if not p2.isJump:
+        if keys[pygame.K_w]:
+            p2.isJump = True
+    else:
+        if p2.jumpCount >= -10:
+            neg = 1
+            if p2.jumpCount < 0:
+                neg = -1
+            jumpVar = (p2.jumpCount ** 2) * 0.3 * neg
+            p2.y += jumpVar                # Player  2 jump
+            p2.jumpCount -= 1
+
+        else:
+            p2.isJump = False
+            p2.jumpCount = 10
     # Player dead scenario
   #  if(p.x == )
 
