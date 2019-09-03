@@ -61,6 +61,8 @@ jump = [
 
 # Class for player1
 
+knife_img = pygame.image.load("./sprites/knife/knife.png").convert_alpha()
+
 
 class PlayerUP(object):
 
@@ -142,24 +144,23 @@ class Knife:
         self.x = x
         self.y = y
         self.vel = vel              # variable speed of incomming projectile
-        self.img = pygame.image.load("./sprites/knife/knife.png").convert_alpha()
-
+        self.img = knife_img
+        self.img2 = pygame.transform.rotate(knife_img, 180)
     # Knife motion
-    def action(self, surface):
-        surface.blit(self.img, (self.x, self.y))
-        self.x -= self.vel
-
 
     # Incoming projectile logic
 kPos_x = W                              # Positions
 kPos_y = random.randrange(H // 4, H // 3 - 60)
+kPos_x2 = 0
 print("" + str(H // 4) + " and " + str(H // 2 - 40) + " is the rangeeee !!!!!!!!!!!")
 k_speed = 20
 
 
-def throwKnife(x, y, surface):
-    surface.blit(k.img, (x, y))
-
+def throwKnife(x, y, surface, frame):
+    if frame == 1:
+        surface.blit(k.img, (x, y))
+    if frame == 2:
+        surface.blit(k.img2, (x, y))
 # Detect collision between player and projectile
 
 
@@ -196,6 +197,7 @@ def detectCollision(surface, px, py, kx, ky):
 # Player Objects
 p = PlayerUP(posX, posY, 10, 10, 0)
 p2 = PlayerDown(posX2, posY2, 10, 10, 0)
+
 k = Knife(W, posY + 10, 20)
 
 # Game Loop
@@ -220,12 +222,16 @@ while run:
 
     # Throwing knife
     kPos_x -= k_speed
-    throwKnife(kPos_x, kPos_y, gameDisplay)
-
+    kPos_x2 += k_speed
+    throwKnife(kPos_x, kPos_y, gameDisplay, 1)
+    throwKnife(kPos_x2, kPos_y + 300, gameDisplay, 2)
     # When the knife goes out of screen, regenerate the y co-ordinates and throw again
     if kPos_x <= 0:
         kPos_x = W + 20
         kPos_y = random.randrange(H // 4, H // 2 - 30)
+
+    if kPos_x2 >= W - knife_img.get_rect().width:
+        kPos_x2 = -20
 
     detectCollision(gameDisplay, p.x, p.y, kPos_x, kPos_y)
 
