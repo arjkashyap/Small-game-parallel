@@ -17,8 +17,8 @@ red = (255, 0, 0)
 
 # Display settings
 W, H = 1366, 768
-bg_speed = 5
-posX, posY = W // 4, H // 2 - 140    # Player co-ordinates
+bg_speed = 3
+posX, posY = W // 2, H // 2 - 140    # Player co-ordinates
 posX2, posY2 = posX, posY * 3 / 2 + 105     # Player 2 co-ordinates
 
 gameDisplay = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -111,8 +111,8 @@ class PlayerDown:
         # Speed of moving
         self.end = end
         self.health = 10
-        self.faceLeft = True
-        self.faceRight = False
+        self.faceLeft = False
+        self.faceRight = True
 
        # Load sprites for player 2
         self.idle = [pygame.transform.rotate(img, 180) for img in idle]
@@ -152,7 +152,8 @@ class Knife:
 
     # Incoming projectile logic
 kPos_x = W                              # Positions
-kPos_y = random.randrange(H // 4, H // 2)
+kPos_y = random.randrange(H // 4, H // 3 - 60)
+print("" + str(H // 4) + " and " + str(H // 2 - 40) + " is the rangeeee !!!!!!!!!!!")
 k_speed = 20
 
 
@@ -181,14 +182,15 @@ def message_display(text):
 
 
 def detectCollision(surface, px, py, kx, ky):
-    print("range is : " + str(py) + " to " + str(py + 30))
-    if kx == px:
-        print("X co-ordinates are equal.......")
-    if int(ky) in range(int(py), int(py + 400)) and int(kx) in range(int(px), int(px + 10)):
-        message_display("Game Over")
+    #print("range is : " + str(py) + " to " + str(py + 30))
+    # if kx == px:
+    #    print("X co-ordinates are equal.......")
+    # if int(ky) in range(int(py), int(py + 400)) and int(kx) in range(int(px), int(px + 10)):
+    #     message_display("Game Over")
 
-    print("px: " + str(px) + " py: " + str(py))
-    print("kx: " + str(kx) + " ky: " + str(ky))
+    # print("px: " + str(px) + " py: " + str(py))
+    # print("kx: " + str(kx) + " ky: " + str(ky))
+    pass
 
 
 # Player Objects
@@ -214,7 +216,7 @@ while run:
     rel_x2 = bg_x2 % bgDown.get_rect().width
     gameDisplay.blit(bgDown, [rel_x2 - bgDown.get_rect().width, bg_y2])
     gameDisplay.blit(bgDown, [rel_x2, bg_y2])
-    bg_x2 -= bg_speed
+    bg_x2 += bg_speed
 
     # Throwing knife
     kPos_x -= k_speed
@@ -230,11 +232,12 @@ while run:
     keys = pygame.key.get_pressed()
 
     p.x -= bg_speed                         # Player x reduces with moving game cam
-    p2.x -= bg_speed
+    p2.x += bg_speed
 
-    if p.x <= 0 or p2.x <= 0:
+    if p.x <= 0:
         p.x += bg_speed
-        p2.x += bg_speed
+    if p2.x >= W - idle[0].get_rect().width:
+        p2.x -= bg_speed
 
     # Motion Controls Player 1
     if keys[pygame.K_RIGHT] and p.x < W - abs(vel) - 50:
@@ -253,12 +256,12 @@ while run:
         gameDisplay.blit(p.idle[1], (p.x, p.y))
 
     # Motion Conrtols Player 2
-    if keys[pygame.K_RIGHT] and p2.x < W - abs(vel) - 50:
+    if keys[pygame.K_d] and p2.x < W - abs(vel) - 50:
         p2.faceRight, p2.faceLeft = False, True
         vel = 18
         p2.action(gameDisplay, vel)
 
-    elif keys[pygame.K_LEFT] and p2.x > 0:
+    elif keys[pygame.K_a] and p2.x > 0:
         p2.faceRight, p2.faceLeft = True, False
         vel = -18
         p2.action(gameDisplay, vel)
