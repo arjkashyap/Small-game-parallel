@@ -148,6 +148,7 @@ class Knife:
         self.img2 = pygame.transform.rotate(knife_img, 180)
     # Knife motion
 
+
     # Incoming projectile logic
 kPos_x = W                              # Positions
 kPos_y = random.randrange(H // 4, H // 3 - 60)
@@ -183,15 +184,8 @@ def message_display(text):
 
 
 def detectCollision(surface, px, py, kx, ky):
-    #print("range is : " + str(py) + " to " + str(py + 30))
-    # if kx == px:
-    #    print("X co-ordinates are equal.......")
-    # if int(ky) in range(int(py), int(py + 400)) and int(kx) in range(int(px), int(px + 10)):
-    #     message_display("Game Over")
-
-    # print("px: " + str(px) + " py: " + str(py))
-    # print("kx: " + str(kx) + " ky: " + str(ky))
-    pass
+    if int(ky) in range(int(py), int(py + 400)) and int(kx) in range(int(px), int(px + 10)):
+        message_display("Game Over")
 
 
 # Player Objects
@@ -234,7 +228,7 @@ while run:
         kPos_x2 = -20
 
     detectCollision(gameDisplay, p.x, p.y, kPos_x, kPos_y)
-
+    detectCollision(gameDisplay, p2.x, p2.y, kPos_x, kPos_y)
     keys = pygame.key.get_pressed()
 
     p.x -= bg_speed                         # Player x reduces with moving game cam
